@@ -94,7 +94,7 @@ case $method in
      debug)
         legit=1
 	if [ ! -f $binary ]; then
-    		echo -e "File not found. Please specify a valid file for the debug method.\n"
+    		echo -e "Error: File not found. Please specify a valid file for the debug method. Quiting\n"
 		exit 4;
 	fi
 	file_name=$(echo "$binary" | sed "s/.*\///") && cp $binary /tmp/ && upx -9 /tmp/$file_name &>/dev/null  && cd /tmp/ && wine /usr/share/windows-binaries/exe2bat.exe $file_name debug.txt; cat /tmp/debug.txt | xclip -selection clipboard;
@@ -111,7 +111,7 @@ case $method in
         ;;
      *)
 	if [ $legit -eq 0 ]; then
-          echo "No valid transfer method specified. Quiting."
+          echo "Error: No valid transfer method specified. Quiting."
 	  exit 4;
 	fi;
 	;;
