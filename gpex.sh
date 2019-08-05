@@ -8,7 +8,7 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 ! getopt --test > /dev/null 
 if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
-    echo 'I’m sorry, `getopt --test` failed in this environment.'
+    echo '`getopt --test` failed in this environment.'
     exit 1
 fi
 
@@ -25,7 +25,7 @@ if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
 fi
 eval set -- "$PARSED"
 
-method=ftp localhost=$ip binary=nc.exe port=-
+method=ftp localhost=$ip binary=nc.exe
 
 while true; do
     case "$1" in
@@ -57,9 +57,9 @@ while true; do
 done
 
 #Show options;
-echo -e "Method: $method"
-echo "Localhost: $localhost";
-echo -e "Binary: $binary\n\nOutput:\n";
+echo -e "[+] Method: $method"
+echo "[+] Localhost: $localhost";
+echo -e "[+] Binary: $binary\n\nOutput:\n";
 
 #Check if method is proper:
 legit=0;
@@ -81,7 +81,6 @@ case $method in
          ;;&
      debug)
         legit=1
-	# check if bin exists
 	if [ ! -f $binary ]; then
     		echo -e "File not found. Please specify a valid file for the debug method.\n"
 		exit 4;
@@ -106,4 +105,8 @@ case $method in
 	;;
 esac
 
-echo -e "(Copied to clipboard)\n";
+if [ $method == "all" ]; then
+	echo "Copy a transfer method ouput manually.\n"
+else
+	echo -e "(Copied to clipboard)\n";
+fi;
