@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help {
-	echo -e "A simple script to quickly generate file-transfers for post-exploitation.\n\nUsage:\n\t-m | --method\t\tThe transfer method to use: ftp|vbs|powershell|debug|perl|python\n\t-b | --binary\t\tThe binary to use (use absolute path for debug method)\n\t-l | --localhost\tYour IP address. When not specified it uses the \$ip env variable.\n\t\n";
+	echo -e "A simple script to quickly generate file-transfers for post-exploitation.\n\nUsage:\n\t-m | --method\t\tThe transfer method to use: ftp|vbs|powershell|debug|perl|python|all\n\t-b | --binary\t\tThe binary to use (use absolute path for debug method)\n\t-l | --localhost\tYour IP address. When not specified it uses the \$ip env variable.\n\t\n";
 }
 
 set -o errexit -o pipefail -o noclobber -o nounset
@@ -24,6 +24,11 @@ if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
     exit 2
 fi
 eval set -- "$PARSED"
+
+#Check if ip is set
+if [ -z ${ip+x} ]; then
+	ip="none";
+fi
 
 method=ftp localhost=$ip binary=nc.exe
 
@@ -55,6 +60,13 @@ while true; do
             ;;
     esac
 done
+
+#Check if any ip option is specified
+if [ $ip == "none" ]; then
+        echo -e "Error: \$ip env variable is not set. Set \$ip or specify your localhost with -l|--localhost. Quiting!\n";
+	exit 4;
+fi;
+
 
 #Show options;
 echo -e "[+] Method: $method"
